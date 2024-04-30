@@ -2,7 +2,6 @@
     function sendData() {
         // @ts-ignore
         var data = document.getElementById("players")?.value
-        console.log(data)
         let names: string[] = data.toString().split(" ")
         let newUrl: string = window.location.href + "game?pnames=" + names.join(",")
         window.location.href = newUrl

@@ -32,6 +32,8 @@
             case 5:
                 document.getElementById(id)?.classList.toggle("dead")
                 break
+            case 7:
+                document.getElementById(id)?.classList.toggle("kCheck")
             
         }
     }
@@ -47,6 +49,7 @@
         <button on:click={()=> {changeState(5)}} class="rolebtn">Ukatrup</button>
         <button on:click={()=> {changeState(6)}} class="rolebtn">Reset</button>
         <button on:click={()=>{window.location.href = window.location.origin}} class="rolebtn">New Game</button>
+        <button on:click={()=> {changeState(7)}} class="rolebtn">Katani Check</button>
     </div>
     <div class="buttons">
         {#each names as name}
@@ -156,5 +159,8 @@
     :global(.dead) {
         background-color: #1A1A1A!important;
         color: #fff!important;
+    }
+    :global(.kCheck) {
+        border-color: red!important;
     }
 </style>
