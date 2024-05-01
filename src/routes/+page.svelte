@@ -1,5 +1,4 @@
 <script>
-	import Game from './game/+page.svelte';
 	import Players from './Players.svelte';
 </script>
 

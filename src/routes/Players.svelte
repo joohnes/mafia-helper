@@ -2,8 +2,8 @@
     function sendData() {
         // @ts-ignore
         var data = document.getElementById("players")?.value
-        let names: string[] = data.toString().split(" ")
-        let newUrl: string = window.location.href + "game?pnames=" + names.join(",")
+        let names: string[] = data.toString().trimEnd().split(" ")
+        let newUrl: string = window.location.href + "roles?pnames=" + names.join(",")
         window.location.href = newUrl
     }
 </script>

@@ -2,50 +2,77 @@
     import { page } from '$app/stores'
     
     const data = $page.url.searchParams.getAll("pnames")
-    let players: string[] = data[0].split(",")
+    let names: string[] = data[0].split(",")
     var State = 0
+    var Players: string[] = []
 
     function changeState(state: number) {
         State = state
         if (State == 6) {
-            var pnames: string[] = []
-            for (var i = 0; i < players.length; i++) {
-                    pnames.push(players[i].split(":")[0])
-                    window.location.href = window.location.origin + "/roles?pnames=" + pnames.join(",")
+            for (var i = 0; i < names.length; i++) {
+                    document.getElementById(names[i])?.classList.remove("katani", "dead", "asasyn", "mafia", "medyk")
                 }
         }
     }
 
+    function startGame() {
+        names.forEach(name => {
+            if (document.getElementById(name)?.classList.contains("mafia")) {
+                Players?.push(name+":"+"mafia")
+            } else if (document.getElementById(name)?.classList.contains("katani")) {
+                Players?.push(name+":"+"katani")
+            } else if (document.getElementById(name)?.classList.contains("medyk")) {
+                Players?.push(name+":"+"medyk")
+            } else if (document.getElementById(name)?.classList.contains("asasyn")) {
+                Players?.push(name+":"+"asasyn")
+            } else {
+                Players?.push(name+":"+"noname")
+            }
+        });
+        // @ts-ignore
+        console.log(Players)
+        let newUrl: string = window.location.origin + "/game?pnames=" + Players.join(",")
+        window.location.href = newUrl
+    }
+
     function toggleRole(id: string) {
         switch (State) {
-            case 5:
-                document.getElementById(id)?.classList.toggle("dead")
+            case 1:
+                document.getElementById(id)?.classList.toggle("mafia")
                 break
-            case 7:
-                document.getElementById(id)?.classList.toggle("kCheck")
-            
+            case 2:
+                document.getElementById(id)?.classList.toggle("katani")
+                break
+            case 3:
+                document.getElementById(id)?.classList.toggle("medyk")
+                break
+            case 4:
+                document.getElementById(id)?.classList.toggle("asasyn")
+                break
         }
     }
+
 
 </script>
 
 <div class="container">
     <div class="buttons">
-        <button on:click={()=> {changeState(5)}} class="rolebtn">Ukatrup</button>
-        <button on:click={()=> {changeState(6)}} class="rolebtn">Reset</button>
-        <button on:click={()=>{window.location.href = window.location.origin}} class="rolebtn">New Game</button>
-        <button on:click={()=> {changeState(7)}} class="rolebtn">Katani Check</button>
+        <button on:click={()=> {changeState(1)}} class="rolebtn mafia">Mafia</button>
+        <button on:click={()=> {changeState(2)}} class="rolebtn katani">Katani</button>
+        <button on:click={()=> {changeState(3)}} class="rolebtn medyk">Medyk</button>
+        <button on:click={()=> {changeState(4)}} class="rolebtn asasyn">Asasyn</button>
+        <button on:click={()=> {startGame()}} class="rolebtn">Start</button>
     </div>
     <div class="divider"/>
     <div class="buttons">
-        {#each players as player}
+        {#each names as name}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div id={player.split(":")[0]} 
-            class="playerCard rolebtn {player.split(":")[1]}"
-            on:click={()=>{toggleRole(player.split(":")[0])}}
+            <div id={name} 
+            class="playerCard rolebtn"
+            on:click={()=>{toggleRole(name)}}
             >
-                <span class="playerName">{player.split(":")[0]}</span>
+                <span class="playerName">{name}</span>
             </div>
         {/each}
     </div>
@@ -153,6 +180,6 @@
         color: #fff!important;
     }
     :global(.kCheck) {
-        box-shadow: rgb(40, 111, 234) 0px 0px 4px 4px!important;
+        border-color: red!important;
     }
 </style>
